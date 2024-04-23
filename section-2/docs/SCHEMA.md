@@ -52,7 +52,7 @@ This table contains data items describing entity.
 
 | Column Name | Description | Type |
 |-------------|-------------| ---- |
-| c_id        | Unique identifier for each entity | INTEGER |
+| c_id        | Unique identifier for each entity | STRING |
 | c_name      | Name of the entity | STRING |
 | c_type      | Type of the entity | STRING |
 | c_active    | Boolean value indicating if the entity is active - 0 for false, 1 for true | INTEGER |
@@ -70,8 +70,6 @@ This table contains the assignments of agents to entities.
 | c_id        | Unique identifier for each entity assignment | INTEGER |
 | c_entityid  | Unique identifier for each entity | STRING |
 | c_agentid   | Unique identifier for each agent | STRING |
-
-
 
 
 ---
