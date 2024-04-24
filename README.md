@@ -70,3 +70,10 @@ You can start from here:
 - [Section 1: ETL Pipelines (Python)](section-1/s1-README.md)
 - [Section 2: SQL Queries](section-2/s2-README.md)
 - [Section 3: Presentation and Code Review](section-3/s3-README.md) 
+
+
+## Copyright
+
+All Rights Reserved. Copyright (c) 2024 NICE.
+
+See the [LICENSE](LICENSE) for more information. 
