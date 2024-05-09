@@ -8,11 +8,11 @@ from load import load_data
 # Pipeline that orchestrates the ETL process
 def run_etl():
     # Extraction
-    extract_data()
+    jsons_extracted = extract_data()
     # Transformation
-    transform_data()
+    df_transformed = transform_data(jsons_extracted)
     # Loading
-    load_data()
+    load_data(df_transformed)
 
 
 if __name__ == "__main__":

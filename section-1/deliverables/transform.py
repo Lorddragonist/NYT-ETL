@@ -3,10 +3,8 @@
 
 # Libraries
 import pandas as pd
-import os
 import numpy as np
 from datetime import datetime
-import json
 
 
 # Returns True and prints a message in console if there are duplicate _id values within the data, else return False
@@ -156,23 +154,14 @@ def extract_info_from_response_json(json_data):
 
 
 # Main function of transformation
-def transform_data():
-    # Set origin for the json files
-    origin_folder = os.path.join(os.getcwd(), 'json_responses')
-    # List of json files
-    json_raw_files = os.listdir(origin_folder)
+def transform_data(jsons):
 
-    # Iteration to scan each json file
-    for json_file in json_raw_files:
-        # File name with path
-        json_file_path = os.path.join(origin_folder, json_file)
+    # Iteration to scan each json
+    for index, json_ in enumerate(jsons):
 
-        # json file transformed into json variable
-        with open(json_file_path, 'r', encoding='utf-8') as json_f:
-            data = json.load(json_f)
-            # Applying the function to extract the data that I defined previously
-            extract_info_from_response_json(data)
-            print(f'File {json_file} has been processed')
+        # Applying the function to extract the data that I defined previously
+        extract_info_from_response_json(json_)
+        print(f'json {index} has been processed')
 
     # Transforming the lists to a dataframe using pandas
     df = pd.DataFrame(
@@ -193,12 +182,7 @@ def transform_data():
         }
     )
 
-    # Set destination of the final csv
-    destination_folder = os.path.join(os.getcwd(), 'csv_transformation_result')
+    test_duplicate_ids(df, 100)
+    count_articles_wordcount_ge50(df)
 
-    duplicates_validation = test_duplicate_ids(df, 100)
-    count_articles_wordcount_ge50_validation = count_articles_wordcount_ge50(df)
-
-    # Saving the dataframe into a csv
-    df.to_csv(os.path.join(destination_folder, 'data_transformed.csv'), index=False, encoding='utf-8')
-
+    return df

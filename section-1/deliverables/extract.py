@@ -3,14 +3,15 @@
 
 # Libraries
 import requests
-import os
 import time
-import json
+import os
+
+target_articles_count = 100
 
 
 # Validates if I downloaded at least 100 articles
 def test_number_of_articles(counter):
-    if counter >= 100:
+    if counter >= target_articles_count:
         print('\nThere are at least 100 articles')
     else:
         print('\nThe amount of articles downloaded is less than 100')
@@ -18,14 +19,8 @@ def test_number_of_articles(counter):
 
 # Main method of extraction
 def extract_data():
-    # Set destination for the json files
-    destination_folder = os.path.join(os.getcwd(), 'json_responses')
-
-    # Erase previous json files
-    for file in os.listdir(destination_folder):
-        if file.endswith('.json'):
-            full_file = os.path.join(destination_folder, file)
-            os.remove(full_file)
+    # This function will return a list of jsons
+    jsons = []
 
     # Parameters to access the API
     # For the api key, I have saved it into a local environment variable
@@ -40,7 +35,7 @@ def extract_data():
     page = 0
 
     # send request and save the JSON into json_responses folder
-    while articles_counter < 100:
+    while articles_counter < target_articles_count:
 
         # If the page is not the first one, this will delay 12 seconds as the NYT API documentation recommends
         if page > 0:
@@ -56,14 +51,8 @@ def extract_data():
             # json content
             data = response.json()
 
-            # Filename
-            file_name = 'page_' + str(page) + '_response.json'
-            # Filename with path
-            file_path = os.path.join(destination_folder, file_name)
-
-            # Saving the variable into json format
-            with open(file_path, 'w', encoding='utf-8') as file:
-                json.dump(data, file, ensure_ascii=False, indent=4)
+            # jsons append
+            jsons.append(data)
 
             # Counting the articles found in the request
             articles_count = len(data['response']['docs'])
@@ -83,3 +72,5 @@ def extract_data():
 
     # Validates the final number of downloaded articles
     test_number_of_articles(articles_counter)
+
+    return jsons

@@ -21,10 +21,13 @@ def test_table_exists(engine_conn, table_name):
 
 # Test_number_of_records is a function that validates that the number of records in the table is equal to the number
 # of articles extracted in Task 1
-def test_number_of_records(table_name, engine_conn, expected_number):
+def test_number_of_records(table_name, engine_conn, df):
     query = f"SELECT COUNT(*) AS ELEMENTS FROM {table_name};"
     counter = pd.read_sql_query(query, con=engine_conn)
     counter = int(counter['ELEMENTS'].values[0])
+
+    expected_number = df.shape[0]
+
     if counter == expected_number:
         print(f"\nTable '{table_name}' has {expected_number} records. It is the expected number of records.")
     else:
@@ -32,12 +35,7 @@ def test_number_of_records(table_name, engine_conn, expected_number):
 
 
 # Main method of the loading process
-def load_data():
-    # Set origin for the json files
-    origin_folder = os.path.join(os.getcwd(), 'csv_transformation_result')
-
-    # DataFrame
-    df = pd.read_csv(os.path.join(origin_folder, 'data_transformed.csv'))
+def load_data(df):
 
     # Database connection
     url = os.getenv("TURSO_DATABASE_URL")
@@ -59,4 +57,4 @@ def load_data():
     test_table_exists(engine, table_target)
 
     # Check if the table Exist
-    test_number_of_records(table_target, engine, 100)
+    test_number_of_records(table_target, engine, df)
