@@ -1,20 +1,20 @@
-# Remember to read the instructions in the task description (section-1/docs/task-1-data-extraction.md)
-# Your implementation here
-
 # Libraries
 import requests
 import time
 import os
 
-target_articles_count = 100
+target_articles_count = int(input("Please enter a minimum number of articles to retrive (API downloads multiples of "
+                                  "10): "))
+# Search parameter
+key_word = input('Please enter a keyword of a topic like "economy": ')
 
 
 # Validates if I downloaded at least 100 articles
 def test_number_of_articles(counter):
     if counter >= target_articles_count:
-        print('\nThere are at least 100 articles')
+        print(f'\nThere are at least {target_articles_count} articles')
     else:
-        print('\nThe amount of articles downloaded is less than 100')
+        print(f'\nThe amount of articles downloaded is less than {target_articles_count}')
 
 
 # Main method of extraction
@@ -26,9 +26,6 @@ def extract_data():
     # For the api key, I have saved it into a local environment variable
     api_key = os.environ.get('NYT_API_KEY')
     url_base = 'https://api.nytimes.com/svc/search/v2/articlesearch.json'
-
-    # Search parameter
-    key_word = 'economy'
 
     # article container
     articles_counter = 0
@@ -74,3 +71,7 @@ def extract_data():
     test_number_of_articles(articles_counter)
 
     return jsons
+
+#%%
+
+#%%

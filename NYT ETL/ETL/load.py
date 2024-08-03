@@ -1,6 +1,3 @@
-# Remember to read the instructions in the task description
-# Your implementation here
-
 # Libraries
 from sqlalchemy import create_engine, inspect
 import os
@@ -22,9 +19,10 @@ def test_table_exists(engine_conn, table_name):
 # Test_number_of_records is a function that validates that the number of records in the table is equal to the number
 # of articles extracted in Task 1
 def test_number_of_records(table_name, engine_conn, df):
-    query = f"SELECT COUNT(*) AS ELEMENTS FROM {table_name};"
+    query = f"SELECT COUNT(*) AS elements FROM {table_name};"
     counter = pd.read_sql_query(query, con=engine_conn)
-    counter = int(counter['ELEMENTS'].values[0])
+    counter = counter['elements'].to_list()
+    counter = int(counter[0])
 
     expected_number = df.shape[0]
 
@@ -38,11 +36,15 @@ def test_number_of_records(table_name, engine_conn, df):
 def load_data(df):
 
     # Database connection
-    url = os.getenv("TURSO_DATABASE_URL")
-    auth_token = os.getenv("TURSO_AUTH_TOKEN")
+    user = os.getenv("POSTGRES_USER")
+    password = os.getenv("POSTGRES_PASSWORD")
+    server = 'localhost:5432'
+    database = 'NYT'
+
+    url = f'postgresql+psycopg2://{user}:{password}@{server}/{database}'
 
     # Create engine with SQL Alchemy and LibSQL
-    engine = create_engine(f'sqlite+{url}?authToken={auth_token}&secure=true')
+    engine = create_engine(url)
     print('\nConnection successfully established')
 
     table_target = 'tb_nytimes_articles'
